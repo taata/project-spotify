@@ -1,0 +1,80 @@
+.box-banner{
+    background-image: url('/dist/images/home/bg.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100%;
+    height: 580px;
+    position: relative;
+    background-color: $white;
+    background-position: center;
+    background-size: cover;
+    nav{
+        background-color: $black;
+    }
+    .box-title{
+        position: absolute;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        left: 0;
+        h2{
+            color: white;
+            text-align: center;
+            font-family: 'Headland One', serif;
+            text-shadow: 1px 1px #030d15;
+        }
+    }
+}
+
+.box-content-music{
+    .box-title{
+        display: flex;
+        justify-content: center;
+        margin: 40px;
+        align-items: center;
+        h4{
+            font-size: 30px;
+            margin: 0 10px;
+            font-style: oblique;
+        }
+    }
+    .card {
+        &.w-fixed{
+            .card-content{
+                height: 150px;
+            }
+        }
+        .card-image{
+           img{
+                transition: all 0 5s ease-out;
+                filter: opacity(68%);
+                &:hover{
+                    filter: opacity(100%);
+                    cursor: pointer;
+                    transition: all 2s ease;
+                }
+           }
+            .card-title{
+                background-color: rgba(237, 243, 245, 0.522);
+                width: 100%;
+                text-align: center;
+                text-shadow: 0.5px 1.2px #2196f3;
+                padding: 10px;
+                color: #2b0f0f;
+            }
+        }
+        .card-action{
+            &:hover{
+                background-color: rgba(237, 243, 245, 0.522);
+            }
+            a{
+                color: $blue-accent1 !important;
+                &:hover{
+                    color: darken($blue-accent1, 2%)!important;
+                }
+            }
+        }
+    }
+}
