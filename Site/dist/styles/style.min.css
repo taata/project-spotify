@@ -1,3 +1,9 @@
+.d-block {
+  display: block; }
+
+.d-none {
+  display: none; }
+
 .box-banner {
   background-image: url("/dist/images/home/bg.jpg");
   background-repeat: no-repeat;
@@ -21,7 +27,8 @@
     .box-banner .box-title h2 {
       color: white;
       text-align: center;
-      font-family: 'Headland One', serif; }
+      font-family: 'Headland One', serif;
+      text-shadow: 1px 1px #030d15; }
 
 .box-content-music .box-title {
   display: flex;
@@ -45,12 +52,11 @@
     transition: all 2s ease; }
 
 .box-content-music .card .card-image .card-title {
-  background-color: rgba(237, 243, 245, 0.522);
+  background-color: rgba(0, 0, 0, 0.72);
   width: 100%;
   text-align: center;
-  text-shadow: 0.5px 1.2px #2196f3;
   padding: 10px;
-  color: #2b0f0f; }
+  color: #ffffff; }
 
 .box-content-music .card .card-action:hover {
   background-color: rgba(237, 243, 245, 0.522); }

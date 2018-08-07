@@ -57,12 +57,11 @@
                 }
            }
             .card-title{
-                background-color: rgba(237, 243, 245, 0.522);
+                background-color: rgba(0, 0, 0, 0.72);
                 width: 100%;
                 text-align: center;
-                text-shadow: 0.5px 1.2px #2196f3;
                 padding: 10px;
-                color: #2b0f0f;
+                color: $white;
             }
         }
         .card-action{
@@ -78,3 +77,4 @@
         }
     }
 }
+

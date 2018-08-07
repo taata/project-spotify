@@ -25,7 +25,8 @@ gulp.task('sass:build', function () {
         .pipe(rename({
             suffix: '.min'
         }))
-        .pipe(gulp.dest(`${dist}/styles`));
+        .pipe(gulp.dest(`${dist}/styles`))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('sass:watch', ['sass:build'], () => {
@@ -39,13 +40,17 @@ gulp.task('sass:build-plugins', function () {
         .pipe(gulp.dest(`${dist}/styles`));
 });
 
+gulp.task('js:watch', ['js:build'], () => {
+    gulp.watch(`${src}/scripts/custom/*.js`, ['js:build']);
+});
 gulp.task('js:build', () => {
     return gulp
         .src([
             `${src}/scripts/custom/*.js`
         ])
         .pipe(concat('custom.min.js'))
-        .pipe(gulp.dest(`${dist}/scripts`));
+        .pipe(gulp.dest(`${dist}/scripts`))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('js:build-plugins', () => {
@@ -59,7 +64,10 @@ gulp.task('js:build-plugins', () => {
 
 gulp.task('browser-sync', function () {
     browserSync.init({
-        proxy: 'www-dev.projeto-spotify.com'
+        server: {
+            baseDir: './Site',
+            index: './index.html'
+        }
     });
 
     gulp.watch(`*.html`).on('change', browserSync.reload);
@@ -75,6 +83,7 @@ gulp.task('default', ['browser-sync'], () => {
     gulp.start('sass:watch');
     gulp.start('sass:build');
     gulp.start('sass:build-plugins');
+    gulp.start('js:watch');
     gulp.start('js:build');
     gulp.start('js:build-plugins');
 });

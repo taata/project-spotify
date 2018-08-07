@@ -1,25 +1,28 @@
 var limitTopArtists = 10;
 var topArtistsUrl = `https://api.spotify.com/v1/me/top/artists?limit=${limitTopArtists}`;
 var boxData = document.getElementById('box-artists');
-console.log('boxData: ', boxData);
+var boxPopularityHigh = document.getElementById('box-artists-popularity-high');
 
-console.log('caiu aqui no custom');
-
+let orderArtists = [];
+let artistsPopularityHigh = {};
 let cont = 0;
 
-getTopArtists();
+init();
+
+
 
 function getTopArtists() {
     fetch(topArtistsUrl, {
         headers: new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer BQAeFtR1LHCSm4_d9S6VmpaCCS4Vz58HJlh0ZYdUXsjk-r5jvOtSJH__CxXPD8C0Eey8QjYGhB2rIRGp_3RD5e_x0G-VDfjf4f9UOPdAfTpcOjNKIhwk_QMItHo_aZwbBB1L-CgtdhiZ3trjKNSYlOBlNJDK8KdySxfXHe_GI7Jf5-t_rg'
+            'Authorization': 'Bearer BQDUHKuCCyt5jBauEFit58sornkEsEbxTbEUqQVwprC_HiNZVdv01LG3OR7rU2LWgziBQOOYeQqKHtOft637Hc__nPpvhp-hH-zZa_zUbo7iI9D5E7aEU2Z8wIadGwKBAhTq8S2VcK5-3f_Ez67ujeCWAlM'
         })
-    }).then(response => response.json()) // retorna uma promise
+    }).then(response => response.json())
         .then(result => {
-            console.log('result', result);
             result.items.forEach(function (value) {
                 cont++;
+
+                orderArtists[cont] = value;
 
                 if (cont <= 2) {
                     boxData.innerHTML += `<div class="col s12 m6">
@@ -61,11 +64,43 @@ function getTopArtists() {
                     boxData.innerHTML += `<div class="clearfix"></div>`;
 
             });
-
         })
         .catch(err => {
             // trata se alguma das promises falhar
             console.error('Failed retrieving information', err);
-        });
+        })
+
 }
 
+function ordernation(order) {
+    boxData.classList.add('d-none');
+
+    artistsPopularityHigh = orderArtists.filter((value) => {
+        return value.popularity > 50;
+    });
+    console.log('artistsPopularityHigh: ', artistsPopularityHigh);
+
+    if (order == 'order-popularity') {
+        for (var x = 0; x < artistsPopularityHigh.length; x++) {
+            boxPopularityHigh.innerHTML += `<div class="col s12 m6">
+             <div class="card">
+                     <div class="card-image">
+                         <img src="${artistsPopularityHigh[x].images[0].url}">
+                         <span class="card-title">${artistsPopularityHigh[x].name}</span>
+                     </div>
+                     <div class="card-content">
+                         <p> Seguidores: <b>${artistsPopularityHigh[x].followers.total}</b></p>
+                         <p>Gênero: <b> ${artistsPopularityHigh[x].genres.splice(0, 2)}</b></p>
+                         <p> Popularidade: ${artistsPopularityHigh[x].popularity}</p>
+                     </div>
+                 </div>
+             </div>`;
+            boxPopularityHigh.classList.remove('d-none');
+        }
+    }
+}
+
+
+function init() {
+    getTopArtists();
+}
