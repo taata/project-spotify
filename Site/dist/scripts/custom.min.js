@@ -6,6 +6,7 @@ var boxPopularityHigh = document.getElementById('box-artists-popularity-high');
 let orderArtists = [];
 let artistsPopularityHigh = {};
 let cont = 0;
+let artistsPopularityHighOrder = {};
 
 init();
 
@@ -15,7 +16,7 @@ function getTopArtists() {
     fetch(topArtistsUrl, {
         headers: new Headers({
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer BQDUHKuCCyt5jBauEFit58sornkEsEbxTbEUqQVwprC_HiNZVdv01LG3OR7rU2LWgziBQOOYeQqKHtOft637Hc__nPpvhp-hH-zZa_zUbo7iI9D5E7aEU2Z8wIadGwKBAhTq8S2VcK5-3f_Ez67ujeCWAlM'
+            'Authorization': 'Bearer  BQC1qyxl1nArNb_9EqmUc34ShbtRFd1KABvKizL10AAFazd2xlIx-Y3EcXVXLfzn17o2KZjaw5fVrpKaQk14a6GEl3CulfuEK274BTFQpnfcYVQrqRf-lN-a54MJ4aP-kTXUJLOw1uVaLdl-vzxP_h4'
         })
     }).then(response => response.json())
         .then(result => {
@@ -78,28 +79,48 @@ function ordernation(order) {
     artistsPopularityHigh = orderArtists.filter((value) => {
         return value.popularity > 50;
     });
-    console.log('artistsPopularityHigh: ', artistsPopularityHigh);
+
+
+    normalize(artistsPopularityHigh, artistsPopularityHighOrder);
 
     if (order == 'order-popularity') {
-        for (var x = 0; x < artistsPopularityHigh.length; x++) {
-            boxPopularityHigh.innerHTML += `<div class="col s12 m6">
-             <div class="card">
-                     <div class="card-image">
-                         <img src="${artistsPopularityHigh[x].images[0].url}">
-                         <span class="card-title">${artistsPopularityHigh[x].name}</span>
-                     </div>
-                     <div class="card-content">
-                         <p> Seguidores: <b>${artistsPopularityHigh[x].followers.total}</b></p>
-                         <p>Gênero: <b> ${artistsPopularityHigh[x].genres.splice(0, 2)}</b></p>
-                         <p> Popularidade: ${artistsPopularityHigh[x].popularity}</p>
-                     </div>
-                 </div>
-             </div>`;
-            boxPopularityHigh.classList.remove('d-none');
-        }
+        artistsPopularityHighOrder = Object.assign([], artistsPopularityHighOrder).reverse();
+
+        artistsPopularityHighOrder.forEach(valueOrdernation => {
+            if (valueOrdernation != undefined) {
+                boxPopularityHigh.innerHTML += `<div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="${valueOrdernation.images[0].url}">
+                            <span class="card-title" > ${ valueOrdernation.name}</span>
+                        </div>
+                        <div class="card-content">
+                            <p> Seguidores: <b>${valueOrdernation.followers.total}</b></p>
+                            <p>Gênero: <b> ${valueOrdernation.genres.splice(0, 2)}</b></p>
+                            <p> Popularidade: ${valueOrdernation.popularity}</p>
+                        </div>
+                    </div> `;
+
+                boxPopularityHigh.classList.remove('d-none');
+            }
+        });
     }
 }
 
+function normalize(valueArray, artistsPopularityHighOrder) {
+    return valueArray.reduce((acc, curr) => {
+
+        //acc.ids.sort((a, b) => b - a);
+        acc.ids.push(curr.popularity);
+        acc.all[curr.popularity] = curr;
+        acc.all = artistsPopularityHighOrder;
+        console.log('acc: ', acc);
+
+        return { ...acc };
+
+    }, { all: {}, ids: [] }
+    );
+}
 
 function init() {
     getTopArtists();
